@@ -12,10 +12,15 @@ class UserGestionComponent extends Component
     use WithPagination;
 
     //propiedades de estado
-    public $filter, $inputs = 10, $sortColumn = 'id', $sortDirection = 'asc', $columns;
+    public $filter, $inputs = 10, $sortColumn = 'id', $sortDirection = 'asc', $columns, $createModalToggle = false;
     protected $paginationTheme = "tailwind";
 
-    
+    //controla el usuario seleccionado
+    public $selectedUser;
+
+
+
+
 
     public function mount()
     {
@@ -32,6 +37,8 @@ class UserGestionComponent extends Component
             'city_code',
             'age'
         ];
+
+        $this->selectedUser = User::first()->id;
     }
 
 
@@ -46,7 +53,7 @@ class UserGestionComponent extends Component
             ->paginate($this->inputs);
 
 
-        return view('livewire.user-gestion-component', compact('users'));
+        return view('livewire.crud-users.user-gestion-component', compact('users'));
     }
     //funcion para manejar el ordenamiento por columnas
     public function sort($column)
@@ -56,5 +63,11 @@ class UserGestionComponent extends Component
         }
         $this->sortColumn = $column;
         $this->sortDirection = $this->sortDirection == 'asc' ? 'desc' : 'asc';
+    }
+
+    //setea el usuario seleccionado
+    public function selectUser($id_user)
+    {
+        $this->selectedUser = $id_user;
     }
 }
