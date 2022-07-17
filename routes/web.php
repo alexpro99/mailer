@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Livewire\UserGestionComponent;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,6 +18,7 @@ Route::get('/', function () {
     return view('auth.login');
 });
 
+
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
@@ -25,4 +27,5 @@ Route::middleware([
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
+    Route::get('/users', UserGestionComponent::class)->middleware('can:isAdmin')->name('userGestor');
 });
