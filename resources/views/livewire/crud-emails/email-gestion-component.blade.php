@@ -92,8 +92,11 @@
                                         <x-jet-button class="m-2 col-span-2 w-1/3 p-2 bg-red-500 hover:bg-red-300"
                                             wire:click="delete('{{ $email->id }}')"> Del </x-jet-button>
                                         @can('isUser')
-                                            <x-jet-button class="m-2 col-span-2 w-1/4 p-2 bg-yellow-500 hover:bg-yellow-300"
-                                                wire:click="editView('{{ $email->id }}')"> Edit </x-jet-button>
+                                            @if ($mailState == 'stored')
+                                                <x-jet-button
+                                                    class="m-2 col-span-2 w-1/4 p-2 bg-yellow-500 hover:bg-yellow-300"
+                                                    wire:click="editView('{{ $email->id }}')"> Edit </x-jet-button>
+                                            @endif
                                         @endcan
                                     </td>
                                 </tr>
