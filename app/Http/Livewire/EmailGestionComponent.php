@@ -2,10 +2,12 @@
 
 namespace App\Http\Livewire;
 
+use App\Jobs\SendEmail;
 use App\Models\Email;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Psy\TabCompletion\Matcher\FunctionsMatcher;
 
 class EmailGestionComponent extends Component
 {
@@ -79,6 +81,8 @@ class EmailGestionComponent extends Component
         if ($email->save()) {
             session()->flash('message', 'Mail in queue to send');
         }
+
+        $this->sendMail($email);
     }
 
     public function setSelectMail($mail_id)
@@ -141,5 +145,11 @@ class EmailGestionComponent extends Component
         if ($email->save()) {
             session()->flash('message', 'Mail in queue to send');
         }
+        $this->sendMail($email);
+    }
+
+    private function sendMail($email) {
+        // dd($email);
+        SendEmail::dispatch($email->id);
     }
 }
