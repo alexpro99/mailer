@@ -36,7 +36,7 @@ class UserGestionComponent extends Component
     public $cities = [];
 
     //---propiedades de usuario
-    public $name, $email, $identificator, $password, $password_confirmation, $cedula, $phone_number, $birth_date, $city_code;
+    public $name, $email, $identificator, $role, $password, $password_confirmation, $cedula, $phone_number, $birth_date, $city_code;
     public $country, $state, $city;
 
 
@@ -186,6 +186,7 @@ class UserGestionComponent extends Component
         $this->phone_number = $selectedUser->phone_number;
         $this->birth_date = $selectedUser->birth_date;
         $this->city_code = $selectedUser->city_code;
+        $this->role = $selectedUser->role;
         $this->editModalToggle = true;
     }
 
@@ -197,6 +198,7 @@ class UserGestionComponent extends Component
         $user->phone_number = $this->phone_number;
         $user->birth_date = $this->birth_date;
         $user->city_code = $this->city_code;
+        $user->role = $this->role;
         if ($user->save()) {
             session()->flash('message', 'User edited succefully');
         }
@@ -218,5 +220,7 @@ class UserGestionComponent extends Component
         } else{
             session()->flash("message', 'You can't delete your account since this view");
         }
+
+        $this->selectedUser = User::paginate($this->inputs)->first()->id;
     }
 }

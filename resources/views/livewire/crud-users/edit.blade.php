@@ -38,9 +38,17 @@
                 </div>
 
                 <div class="m-1">
-                    <x-jet-label for="city_code" wire:model='city_code' value="{{ __('City Code') }}" />
+                    <x-jet-label for="city_code" value="{{ __('City Code') }}" />
                     <x-jet-input id="city_code" type="text" class="mt-1 block w-full" wire:model='city_code' />
                     <x-jet-input-error for="city_code" class="mt-2" />
+                </div>
+                <div class="m-1">
+                    <x-jet-label for="role"  value="{{ __('Role') }}" />
+                    <select id="role" type="text" class="border-solid rounded-md border-gray-200 mt-1 block w-full" wire:model='role'>
+                        <option value="admin">admin</option>
+                        <option value="user">user</option>
+                    </select>
+                    <x-jet-input-error for="role" class="mt-2" />
                 </div>
 
             </form>
