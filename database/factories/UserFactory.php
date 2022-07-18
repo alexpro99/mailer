@@ -34,7 +34,8 @@ class UserFactory extends Factory
             'phone_number' => $this->faker->phoneNumber(),
             'cedula' => Str::random(11),
             'birth_date' => $this->faker->dateTimeInInterval('-50 years', '-18 years'),
-            'city_code' => $this->faker->numberBetween(1000, 9999)
+            'city_code' => $this->faker->numberBetween(1000, 9999),
+            'city' => $this->faker->city()
 
         ];
     }

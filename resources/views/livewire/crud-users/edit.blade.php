@@ -1,9 +1,9 @@
-<x-jet-modal wire:model="createModalToggle" data-backdrop="static">
+<x-jet-modal wire:model="editModalToggle" data-backdrop="static">
     <div class="modal-dialog" role="document">
         <div class="w-full bg-slate-800 h-10 mt-0">
             <div class="ml-1 inline-flex w-full">
-                <h1 class="text-white text-xl">Create user</h1>
-                <button type="button" wire:click.prevent='$toggle("createModalToggle")'
+                <h1 class="text-white text-xl">Edit user</h1>
+                <button type="button" wire:click.prevent='$toggle("editModalToggle")'
                     class="text-white float-right mr-3 ml-auto">x</button>
             </div>
         </div>
@@ -14,11 +14,7 @@
         @endif
         <div class="p-2 m-3">
             <form class="grid grid-cols-3">
-                <div class="m-1">
-                    <x-jet-label for="email" value="{{ __('Email') }}" />
-                    <x-jet-input id="email" type="email" wire:model='email' class="mt-1 block w-full" />
-                    <x-jet-input-error for="email" class="mt-2" />
-                </div>
+
                 <div class="m-1">
                     <x-jet-label for="name" value="{{ __('Name') }}" />
                     <x-jet-input id="name" wire:model='name' type="text" class="mt-1 block w-full" />
@@ -40,11 +36,6 @@
                     <x-jet-input id="password_confirmation" class="block mt-1 w-full" type="password"
                         name="password_confirmation" required wire:model='password_confirmation' />
                     <x-jet-input-error for="password_confirmation" class="mt-2" />
-                </div>
-                <div class="m-1">
-                    <x-jet-label for="cedula" value="{{ __('Cedula') }}" />
-                    <x-jet-input id="cedula" type="text" class="mt-1 block w-full" required wire:model='cedula' />
-                    <x-jet-input-error for="cedula" class="mt-2" />
                 </div>
                 <div class="m-1">
                     <x-jet-label for="phone_number" value="{{ __('Phone Number') }}" />
@@ -111,7 +102,7 @@
             </div>
         </div>
         <div class="mt-3 inline-flex ml-4 float-right mr-2 mb-3">
-            <x-jet-button wire:click="$toggle('createModalToggle')" wire:loading.attr="disabled">
+            <x-jet-button wire:click="$toggle('editModalToggle')" wire:loading.attr="disabled">
                 Close
             </x-jet-button>
 

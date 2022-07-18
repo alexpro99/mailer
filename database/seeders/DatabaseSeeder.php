@@ -35,7 +35,8 @@ class DatabaseSeeder extends Seeder
             'cedula' => '00000000000',
             'birth_date' => Carbon::now()->subYear(20),
             'city_code' => rand(1000, 9999),
-            'role' => 'admin'
+            'role' => 'admin',
+            'city' => 'La habana'
         ]);
     }
 }

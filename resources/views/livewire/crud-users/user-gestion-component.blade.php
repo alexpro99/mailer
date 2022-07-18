@@ -1,4 +1,5 @@
 <div>
+    
 
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
@@ -14,18 +15,21 @@
                     <x-jet-input id="filter" type="text" class="m-1 block col-span-3"
                         placeholder="name, email, phone, cedula" wire:model='filter' />
                 </div>
-                {{$createModalToggle}}
-                
+
                 <div class="col-span-6 sm:col-span-4 inline-flex float-right">
-                    <x-jet-button  class="m-2 col-span-2" wire:click="$toggle('createModalToggle')"> Create </x-jet-button>
-                    <x-jet-button  class="m-2 col-span-2 bg-yellow-400" > Edit </x-jet-button>
+                    <x-jet-button class="m-2 col-span-2" wire:click="$toggle('createModalToggle')"> Create
+                    </x-jet-button>
+                    <x-jet-button class="m-2 col-span-2 bg-yellow-400"> Edit </x-jet-button>
                 </div>
+
+                {{-- incluyendo el modal --}}
                 @include('livewire.crud-users.create')
+
                 <table class="table-fixed w-full">
                     <thead class="bg-slate-400 w-full table-header-group">
                         <tr class="table-row">
                             @foreach ($columns as $item)
-                                <th class="" wire:click='sort("{{ $item }}")'>{{ $item }}
+                                <th class="w-full" wire:click='sort("{{ $item }}")'>{{ $item }}
                                     @if ($sortColumn == $item)
                                         <i>{{ $sortDirection == 'asc' ? 'A' : 'D' }}</i>
                                     @endif
@@ -36,9 +40,10 @@
                     </thead>
                     <tbody>
                         @foreach ($users as $user)
-                            <tr class="text-center table-row {{$selectedUser == $user->id ? 'bg-gray-300' : ''}}" wire:click='selectUser("{{$user->id}}")'>
+                            <tr class="text-center table-row {{ $selectedUser == $user->id ? 'bg-gray-300' : '' }}"
+                                wire:click='selectUser("{{ $user->id }}")'>
                                 @foreach ($columns as $col)
-                                    <td class="w-full table-cell p-2">
+                                    <td class="w-full table-cell p-2 truncate">
                                         @if ($col == 'age')
                                             {{ $user->age() }}
                                         @else
