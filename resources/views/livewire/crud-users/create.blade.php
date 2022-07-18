@@ -122,4 +122,4 @@
     </div>
 
 
-    </x-jet-confirmation-modal>
+    </x-jet-modal>

@@ -19,7 +19,7 @@ return new class extends Migration
             $table->foreignIdFor(User::class);
             $table->text('topic');
             $table->string('destiny');
-            $table->text('body');
+            $table->text('body')->nullable();
             $table->enum('state', ['sended', 'not sended', 'stored']);
             $table->timestamps();
         });
