@@ -20,6 +20,11 @@
                             {{ __('Users') }}
                         </x-jet-nav-link>
                     @endcan
+                    @can('isAdmin')
+                        <x-jet-nav-link href="{{ route('logs') }}" :active="request()->routeIs('logs')">
+                            {{ __('Logs') }}
+                        </x-jet-nav-link>
+                    @endcan
 
                         <x-jet-nav-link href="{{ route('mailGestor') }}" :active="request()->routeIs('mailGestor')">
                             {{ __('Mailer') }}
@@ -175,11 +180,16 @@
                     {{ __('Users') }}
                 </x-jet-responsive-nav-link>
             @endcan
+            @can('isAdmin')
+                <x-jet-responsive-nav-link href="{{ route('logs') }}" :active="request()->routeIs('logs')">
+                    {{ __('Logs') }}
+                </x-jet-responsive-nav-link>
+            @endcan
 
                 <x-jet-responsive-nav-link href="{{ route('mailGestor') }}" :active="request()->routeIs('mailGestor')">
                     {{ __('Mailer') }}
                 </x-jet-responsive-nav-link>
-           
+
 
         </div>
 

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Livewire\ActivityLogsComponent;
 use App\Http\Livewire\EmailGestionComponent;
 use App\Http\Livewire\UserGestionComponent;
 use Illuminate\Support\Facades\Route;
@@ -30,4 +31,5 @@ Route::middleware([
     })->name('dashboard');
     Route::get('/users', UserGestionComponent::class)->middleware('can:isAdmin')->name('userGestor');
     Route::get('/mailer', EmailGestionComponent::class)->name('mailGestor');
+    Route::get('/logs', ActivityLogsComponent::class)->name('logs');
 });
