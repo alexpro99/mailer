@@ -8,7 +8,7 @@
             </div>
         </div>
         @if (session()->has('message'))
-            <div class="alert alert-success">
+            <div class="bg-green-500 rounded-md">
                 {{ session('message') }}
             </div>
         @endif
@@ -59,7 +59,7 @@
                 <div class="m-1">
                     <x-jet-label for="countries" value="{{ __('Country') }}" />
                     <select class="border-solid rounded-md border-gray-200 mt-1 block w-full" name="countries"
-                        wire:model='country' id="countries" wire:model='country'>
+                        wire:model='country' id="countries" wire:init='redyToLoadCountries'>
                         <option value="">Select a country</option>
                         @foreach ($countries as $item)
                             @php

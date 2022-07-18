@@ -27,17 +27,6 @@
                     <x-jet-input-error for="identificator" class="mt-2" />
                 </div>
                 <div class="m-1">
-                    <x-jet-label for="password" value="{{ __('Password') }}" />
-                    <x-jet-input id="password" type="password" class="mt-1 block w-full" wire:model='password' />
-                    <x-jet-input-error for="password" class="mt-2" />
-                </div>
-                <div class="m-1">
-                    <x-jet-label for="password_confirmation" value="{{ __('Confirm Password') }}" />
-                    <x-jet-input id="password_confirmation" class="block mt-1 w-full" type="password"
-                        name="password_confirmation" required wire:model='password_confirmation' />
-                    <x-jet-input-error for="password_confirmation" class="mt-2" />
-                </div>
-                <div class="m-1">
                     <x-jet-label for="phone_number" value="{{ __('Phone Number') }}" />
                     <x-jet-input id="phone_number" type="text" class="mt-1 block w-full" wire:model='phone_number' />
                     <x-jet-input-error for="phone_number" class="mt-2" />
@@ -47,46 +36,7 @@
                     <x-jet-input id="birth_date" type="date" class="mt-1 block w-full" wire:model='birth_date' />
                     <x-jet-input-error for="birth_date" class="mt-2" />
                 </div>
-                <div class="m-1">
-                    <x-jet-label for="countries" value="{{ __('Country') }}" />
-                    <select class="border-solid rounded-md border-gray-200 mt-1 block w-full" name="countries"
-                        wire:model='country' id="countries" wire:model='country'>
-                        <option value="">Select a country</option>
-                        @foreach ($countries as $item)
-                            @php
-                                $item = (array) $item;
-                            @endphp
-                            <option value="{{ $item['country_name'] }}">{{ $item['country_name'] }}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="m-1">
-                    <x-jet-label for="state" value="{{ __('State') }}" />
-                    <select class="border-solid rounded-md border-gray-200 mt-1 block w-full" name="state"
-                        wire:model='state' id="state">
-                        <option value="">Select a country</option>
-                        @foreach ($states as $item)
-                            @php
-                                $item = (array) $item;
-                            @endphp
-                            <option value="{{ $item['state_name'] }}">{{ $item['state_name'] }}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="m-1">
-                    <x-jet-label for="cities" value="{{ __('City') }}" />
-                    <select class="border-solid rounded-md border-gray-200 mt-1 block w-full" name="cities"
-                        wire:model='city' id="cities">
-                        <option value="">Select a country</option>
-                        @foreach ($cities as $item)
-                            @php
-                                $item = (array) $item;
-                            @endphp
-                            <option value="{{ $item['city_name'] }}">{{ $item['city_name'] }}</option>
-                        @endforeach
-                    </select>
-                    <x-jet-input-error for="city" class="mt-2" />
-                </div>
+
                 <div class="m-1">
                     <x-jet-label for="city_code" wire:model='city_code' value="{{ __('City Code') }}" />
                     <x-jet-input id="city_code" type="text" class="mt-1 block w-full" wire:model='city_code' />
@@ -106,8 +56,8 @@
                 Close
             </x-jet-button>
 
-            <x-jet-button class="ml-2 bg-blue-600" wire:click="store" wire:loading.attr="disabled">
-                Save
+            <x-jet-button class="ml-2 bg-yellow-400" wire:click="edit" wire:loading.attr="disabled">
+                Edit
             </x-jet-button>
         </div>
     </div>

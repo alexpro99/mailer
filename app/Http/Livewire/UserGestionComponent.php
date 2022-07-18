@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Schema;
@@ -43,8 +44,9 @@ class UserGestionComponent extends Component
         'birth_date.before' => 'You must be 18+'
     ];
     //reglas de validacion
-    public function rules () {
-       return [
+    public function rules()
+    {
+        return [
             'name' => 'required|min:2',
             'email' => 'required|email|unique:users',
             'phone_number' => 'nullable|numeric|digits_between:6,10',
@@ -53,11 +55,9 @@ class UserGestionComponent extends Component
             'identificator' => 'required|numeric',
             'city' => 'required',
             'city_code' => 'required|numeric',
-            'password' => ['confirmed', 'required', ],
+            'password' => ['confirmed', 'required',],
             'password_confirmation' => 'required|same:password'
         ];
-
-
     }
     public function mount()
     {
@@ -77,7 +77,10 @@ class UserGestionComponent extends Component
         ];
         //se selecciona por defecto el primer elemento
         $this->selectedUser = User::first()->id;
+    }
 
+    public function redyToLoadCountries()
+    {
         // obteniendo el bearer token de la api
         $response = Http::withHeaders([
             'Accept' => 'application/json',
@@ -94,8 +97,6 @@ class UserGestionComponent extends Component
 
         $this->countries = (array)json_decode($countryResponse->body());
     }
-
-
 
     public function render()
     {
@@ -149,9 +150,12 @@ class UserGestionComponent extends Component
         $this->cities = (array)json_decode($cityResponse->body());
     }
 
+    //crea un nuevo usuario
     public function store()
     {
+        //validar reglas
         $this->validate();
+        //validar el password con todo lo que lleva
         Validator::make(
             ['password' => $this->password],
             ['password' => Password::min(8)->symbols()->mixedCase()->numbers()]
@@ -170,8 +174,49 @@ class UserGestionComponent extends Component
 
 
         if ($user->save()) {
-           session()->flash('message', 'User succefull created');
+            session()->flash('message', 'User succefull created');
         }
+    }
 
+    public function prepareEdit()
+    {
+        $selectedUser = User::find($this->selectedUser);
+        $this->name = $selectedUser->name;
+        $this->identificator = $selectedUser->identificator;
+        $this->phone_number = $selectedUser->phone_number;
+        $this->birth_date = $selectedUser->birth_date;
+        $this->city_code = $selectedUser->city_code;
+        $this->editModalToggle = true;
+    }
+
+    public function edit()
+    {
+        $user = User::find($this->selectedUser);
+        $user->name = $this->name;
+        $user->identificator = $this->identificator;
+        $user->phone_number = $this->phone_number;
+        $user->birth_date = $this->birth_date;
+        $user->city_code = $this->city_code;
+        if ($user->save()) {
+            session()->flash('message', 'User edited succefully');
+        }
+    }
+
+    public function showCreate()
+    {
+        $this->reset('name', 'identificator', 'phone_number', 'birth_date', 'city_code');
+        $this->createModalToggle = true;
+    }
+
+    public function delete()
+    {
+        $user = User::find($this->selectedUser);
+        $user_name = $user->name;
+        if ($user->email != Auth::user()->email) {
+            $user->delete();
+            session()->flash('message', 'User ' . $user_name . ' has been deleted');
+        } else{
+            session()->flash("message', 'You can't delete your account since this view");
+        }
     }
 }

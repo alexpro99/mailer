@@ -1,5 +1,5 @@
 <div>
-    
+
 
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
@@ -17,13 +17,20 @@
                 </div>
 
                 <div class="col-span-6 sm:col-span-4 inline-flex float-right">
-                    <x-jet-button class="m-2 col-span-2" wire:click="$toggle('createModalToggle')"> Create
+                    @if (session()->has('message'))
+                        <div class="bg-green-300 rounded-md p-1 m-2 h-7">
+                            {{ session('message') }}
+                        </div>
+                    @endif
+                    <x-jet-button class="m-2 col-span-2" wire:click="showCreate"> Create
                     </x-jet-button>
-                    <x-jet-button class="m-2 col-span-2 bg-yellow-400"> Edit </x-jet-button>
+                    <x-jet-button class="m-2 col-span-2 bg-yellow-400" wire:click='prepareEdit'> Edit </x-jet-button>
+                    <x-jet-button class="m-2 col-span-2 bg-red-400" wire:click='delete'> Delete </x-jet-button>
                 </div>
 
-                {{-- incluyendo el modal --}}
+                {{-- incluyendo los modals --}}
                 @include('livewire.crud-users.create')
+                @include('livewire.crud-users.edit')
 
                 <table class="table-fixed w-full">
                     <thead class="bg-slate-400 w-full table-header-group">
