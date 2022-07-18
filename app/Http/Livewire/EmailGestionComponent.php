@@ -11,7 +11,10 @@ class EmailGestionComponent extends Component
 {
     use WithPagination;
     //propiedades de estado del componente
-    public $filter, $mailState = 'sended', $selectedMail, $inputs, $createModalToggle = false;
+    public $filter, $mailState = 'sended', $selectedMail = '', $inputs,
+     $createModalToggle = false,
+     $editModalToggle = false,
+      $viewModalToggle = false;
     protected $paginationTheme = 'tailwind';
 
     //propiedades de la modelo
@@ -26,18 +29,13 @@ class EmailGestionComponent extends Component
 
     public function mount()
     {
-        try {
-            $this->selectedMail = Email::first()->id;
-            //code...
-        } catch (\Throwable $th) {
-            //throw $th;
-        }
+
     }
 
     public function render()
     {
-        $emails = Email::where('destiny', 'like', '%'.$this->filter.'%')
-        ->where('state', $this->mailState);
+        $emails = Email::where('destiny', 'like', '%' . $this->filter . '%')
+            ->where('state', $this->mailState);
         if (Auth::user()->role == 'user') {
             $emails = $emails->where('user_id', Auth::user()->id);
         }
@@ -65,9 +63,8 @@ class EmailGestionComponent extends Component
         $email->state = 'stored';
         $email->user_id = Auth::user()->id;
         if ($email->save()) {
-           session()->flash('message', 'Mail saved as draft');
+            session()->flash('message', 'Mail saved as draft');
         }
-
     }
 
     public function send()
@@ -80,12 +77,69 @@ class EmailGestionComponent extends Component
         $email->state = 'not sended';
         $email->user_id = Auth::user()->id;
         if ($email->save()) {
-           session()->flash('message', 'Mail in queue to send');
+            session()->flash('message', 'Mail in queue to send');
         }
     }
 
-    public function selectMail($mail_id)
+    public function setSelectMail($mail_id)
     {
         $this->selectedMail = $mail_id;
+    }
+
+    public function delete($email_id)
+    {
+        $email = Email::find($email_id);
+        if ($email->delete()) {
+            session()->flash('message', 'Email succefull deleted');
+        } else session()->flash('errorMessage', 'An error ocurred while deleting email');
+    }
+
+
+
+    public function view($email_id)
+    {
+        $email = Email::find($email_id);
+        $this->selectedMail = $email_id;
+        $this->topic = $email->topic;
+        $this->destiny = $email->destiny;
+        $this->body = $email->body;
+        $this->viewModalToggle = true;
+
+    }
+    public function editView($email_id)
+    {
+        $email = Email::find($email_id);
+        $this->selectedMail = $email_id;
+        $this->topic = $email->topic;
+        $this->destiny = $email->destiny;
+        $this->body = $email->body;
+        $this->editModalToggle = true;
+
+    }
+
+    public function edit()
+    {
+        $this->validate();
+        $email = Email::find($this->selectedMail);
+        $email->topic = $this->topic;
+        $email->destiny = $this->destiny;
+        $email->body = $this->body;
+        $email->state = 'stored';
+        $email->user_id = Auth::user()->id;
+        if ($email->save()) {
+            session()->flash('message', 'Mail in queue to send');
+        }
+    }
+
+    public function sendSaved()
+    {
+        $email = Email::find($this->selectedMail);
+        $email->topic = $this->topic;
+        $email->destiny = $this->destiny;
+        $email->body = $this->body;
+        $email->state = 'not sended';
+        if ($email->save()) {
+            session()->flash('message', 'Mail in queue to send');
+        }
     }
 }

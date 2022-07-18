@@ -1,9 +1,9 @@
-<x-jet-modal wire:model="createModalToggle" data-backdrop="static">
+<x-jet-modal wire:model="editModalToggle" data-backdrop="static">
     <div class="modal-dialog" role="document">
         <div class="w-full bg-slate-800 h-10 mt-0">
             <div class="ml-1 inline-flex w-full">
-                <h1 class="text-white text-xl">Create mail</h1>
-                <button type="button" wire:click.prevent='$toggle("createModalToggle")'
+                <h1 class="text-white text-xl">Edit mail</h1>
+                <button type="button" wire:click.prevent='$toggle("editModalToggle")'
                     class="text-white float-right mr-3 ml-auto">x</button>
             </div>
         </div>
@@ -41,17 +41,22 @@
             </div>
         </div>
         <div class="mt-3 inline-flex ml-4 float-right mr-2 mb-3">
-            <x-jet-button wire:click="$toggle('createModalToggle')" class="bg-red-500 m-3" wire:loading.attr="disabled">
+            <x-jet-button wire:click="$toggle('editModalToggle')" class="bg-red-500 m-3" wire:loading.attr="disabled">
                 Cancel
             </x-jet-button>
+
             @can('isUser')
-                <x-jet-button wire:click="store" class="bg-gray-500 m-3" wire:loading.attr="disabled">
-                    Save
+
+                <x-jet-button wire:click="edit" class="bg-yellow-400 m-3" wire:loading.attr="disabled">
+                    Edit
                 </x-jet-button>
 
-                <x-jet-button class="m-3 bg-blue-600" wire:click="send" wire:loading.attr="disabled">
-                    Send
-                </x-jet-button>
+
+                @if ($mailState == 'stored')
+                    <x-jet-button class="m-3 bg-blue-600" wire:click="sendSaved" wire:loading.attr="disabled">
+                        Send
+                    </x-jet-button>
+                @endif
             @endcan
         </div>
     </div>

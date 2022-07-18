@@ -29,5 +29,5 @@ Route::middleware([
         return view('dashboard');
     })->name('dashboard');
     Route::get('/users', UserGestionComponent::class)->middleware('can:isAdmin')->name('userGestor');
-    Route::get('/mailer', EmailGestionComponent::class)->middleware('can:isUser')->name('mailGestor');
+    Route::get('/mailer', EmailGestionComponent::class)->name('mailGestor');
 });

@@ -31,24 +31,28 @@
                                     class="inline-flex justify-center items-center p-3 ml-3 w-3 h-3 text-sm font-medium text-blue-600 bg-blue-200 rounded-full dark:bg-blue-900 dark:text-blue-200">{{ $cantNotSended }}</span>
                             </a>
                         </li>
-                        <li>
-                            <a wire:click='$set("mailState", "stored")'
-                                class="flex items-center p-2 text-base {{ $mailState == 'stored' ? 'bg-slate-300' : '' }} font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
+                        @can('isUser')
+                            <li>
+                                <a wire:click='$set("mailState", "stored")'
+                                    class="flex items-center p-2 text-base {{ $mailState == 'stored' ? 'bg-slate-300' : '' }} font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
 
-                                <span class="flex-1 ml-3 whitespace-nowrap">Saved</span>
-                                <span
-                                    class="inline-flex justify-center items-center p-3 ml-3 w-3 h-3 text-sm font-medium text-blue-600 bg-blue-200 rounded-full dark:bg-blue-900 dark:text-blue-200">{{ $cantStored }}</span>
-                            </a>
-                        </li>
-
+                                    <span class="flex-1 ml-3 whitespace-nowrap">Saved</span>
+                                    <span
+                                        class="inline-flex justify-center items-center p-3 ml-3 w-3 h-3 text-sm font-medium text-blue-600 bg-blue-200 rounded-full dark:bg-blue-900 dark:text-blue-200">{{ $cantStored }}</span>
+                                </a>
+                            </li>
+                        @endcan
                     </ul>
 
                 </div>
             </aside>
             @include('livewire.crud-emails.create')
+            @include('livewire.crud-emails.view')
+            @include('livewire.crud-emails.edit')
             <main class="w-full m-4 mr-0 h-full float-right bg-white overflow-hidden shadow-xl sm:rounded-lg p-3">
                 <div class="col-span-6 sm:col-span-3 inline-flex">
                     <x-jet-label id="filter_label" for='filter' class="col-span-1 m-1 text-lg mt-1" value='Filter' />
+
                     <x-jet-input id="filter" type="text" class="m-1 block col-span-3" placeholder="destiny"
                         wire:model='filter' />
                 </div>
@@ -58,7 +62,10 @@
                             {{ session('message') }}
                         </div>
                     @endif
-                    <x-jet-button class="m-2 col-span-2" wire:click="showCreate"> Create </x-jet-button>
+                    @can('isUser')
+                        <x-jet-button class="m-2 col-span-2" wire:click="showCreate"> Create </x-jet-button>
+                    @endcan
+
                 </div>
 
                 <table class="table-fixed w-full">
@@ -67,22 +74,33 @@
                             <th class="w-full">No.</th>
                             <th class="w-full">Topic</th>
                             <th class="w-full">Destinatary</th>
+                            <th class="w-full">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         @if ($emails->count())
 
                             @foreach ($emails as $email)
-                                <tr wire:click='$set("selectedMail", "{{ $email->id }}")'
-                                    class="text-center table-row mt-2 {{ $selectedMail == $email->id ? 'bg-purple-300' : '' }}">
+                                <tr wire:click='setSelectMail("{{ $email->id }}")'
+                                    class="text-center table-row mt-2 hover:bg-slate-300 {{ $selectedMail == $email->id ? 'bg-purple-300' : '' }}">
                                     <td class="">{{ $loop->iteration }}</td>
                                     <td class="">{{ $email->topic }}</td>
                                     <td class="">{{ $email->destiny }}</td>
+                                    <td class="inline-flex">
+                                        <x-jet-button class="m-2 col-span-2 w-1/3 p-2 bg-blue-500 hover:bg-blue-300"
+                                            wire:click="view('{{ $email->id }}')"> View </x-jet-button>
+                                        <x-jet-button class="m-2 col-span-2 w-1/3 p-2 bg-red-500 hover:bg-red-300"
+                                            wire:click="delete('{{ $email->id }}')"> Del </x-jet-button>
+                                        @can('isUser')
+                                            <x-jet-button class="m-2 col-span-2 w-1/4 p-2 bg-yellow-500 hover:bg-yellow-300"
+                                                wire:click="editView('{{ $email->id }}')"> Edit </x-jet-button>
+                                        @endcan
+                                    </td>
                                 </tr>
                             @endforeach
                         @else
                             <tr>
-                                <td class="text-center text-red-600" colspan="3">There are not emails :(</td>
+                                <td class="text-center text-red-600" colspan="4">There are not emails :(</td>
                             </tr>
                         @endif
 
