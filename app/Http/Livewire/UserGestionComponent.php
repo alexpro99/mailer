@@ -82,20 +82,24 @@ class UserGestionComponent extends Component
     public function redyToLoadCountries()
     {
         // obteniendo el bearer token de la api
-        $response = Http::withHeaders([
-            'Accept' => 'application/json',
-            'api-token' => $this->api_token,
-            'user-email' => 'acuevasferras@gmail.com'
-        ])->get('https://www.universal-tutorial.com/api/getaccesstoken');
+        try {
+            $response = Http::withHeaders([
+                'Accept' => 'application/json',
+                'api-token' => $this->api_token,
+                'user-email' => 'acuevasferras@gmail.com'
+            ])->get('https://www.universal-tutorial.com/api/getaccesstoken');
 
-        $data = (array)json_decode($response->body());
-        $this->auth_token = $data['auth_token'];
+            $data = (array)json_decode($response->body());
+            $this->auth_token = $data['auth_token'];
 
-        $countryResponse = Http::withHeaders([
-            'Authorization' => 'Bearer ' . $this->auth_token
-        ])->get('https://www.universal-tutorial.com/api/countries/');
+            $countryResponse = Http::withHeaders([
+                'Authorization' => 'Bearer ' . $this->auth_token
+            ])->get('https://www.universal-tutorial.com/api/countries/');
 
-        $this->countries = (array)json_decode($countryResponse->body());
+            $this->countries = (array)json_decode($countryResponse->body());
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
     }
 
     public function render()
@@ -217,7 +221,7 @@ class UserGestionComponent extends Component
         if ($user->email != Auth::user()->email) {
             $user->delete();
             session()->flash('message', 'User ' . $user_name . ' has been deleted');
-        } else{
+        } else {
             session()->flash("message', 'You can't delete your account since this view");
         }
 

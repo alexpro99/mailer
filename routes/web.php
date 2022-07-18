@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Livewire\EmailGestionComponent;
 use App\Http\Livewire\UserGestionComponent;
 use Illuminate\Support\Facades\Route;
 
@@ -28,4 +29,5 @@ Route::middleware([
         return view('dashboard');
     })->name('dashboard');
     Route::get('/users', UserGestionComponent::class)->middleware('can:isAdmin')->name('userGestor');
+    Route::get('/mailer', EmailGestionComponent::class)->middleware('can:isUser')->name('mailGestor');
 });

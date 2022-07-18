@@ -67,4 +67,8 @@ class User extends Authenticatable
         return $actualDate->diffInYears($birth);
 
     }
+
+    public function emails() {
+        return $this->hasMany(Email::class);
+    }
 }

@@ -15,10 +15,17 @@
                     <x-jet-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-jet-nav-link>
-                    
-                    <x-jet-nav-link href="{{ route('userGestor') }}" :active="request()->routeIs('userGestor')">
-                        {{ __('Users') }}
-                    </x-jet-nav-link>
+                    @can('isAdmin')
+                        <x-jet-nav-link href="{{ route('userGestor') }}" :active="request()->routeIs('userGestor')">
+                            {{ __('Users') }}
+                        </x-jet-nav-link>
+                    @endcan
+                    @can('isUser')
+                        <x-jet-nav-link href="{{ route('mailGestor') }}" :active="request()->routeIs('userGestor')">
+                            {{ __('Mailer') }}
+                        </x-jet-nav-link>
+                    @endcan
+
 
                 </div>
 
